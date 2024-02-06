@@ -1,12 +1,10 @@
 import express from "express";
+import morgan from "morgan";
 const PORT = 4000;
 
 const app = express();
-
-const logger = (req, res, next) => {
-  console.log(` ${req.method} ${req.url}`);
-  next();
-};
+const logger = morgan("dev");
+app.use(logger);
 
 const privateMiddleware = (req, res, next) => {
   const url = req.url;
@@ -18,19 +16,23 @@ const privateMiddleware = (req, res, next) => {
   next();
 };
 
-const handleHome = (req, res, next) => {
-  return res.send("i still love you");
-};
+const globalRouter = express.Router();
+const handleHome = (req, res) => res.send("Home");
+globalRouter.get("/", handleHome);
 
-const handleProtected = (req, res) => {
-  return res.send({ message: "Welcom to the private lounge." });
-};
+const userRouter = express.Router();
+const handleEditUser = (req, res) => res.send("EditUser");
+userRouter.get("/edit", handleEditUser);
 
-app.use(logger);
+const videoRouter = express.Router();
+const handleWatchVideo = (req, res) => res.send("Watch Video");
+videoRouter.get("/watch", handleWatchVideo);
+
+app.use("/", globalRouter);
+app.use("/users", userRouter);
+app.use("/videos", videoRouter);
+
 app.use(privateMiddleware);
-
-app.get("/", handleHome);
-app.get("/protected", handleProtected);
 
 const handleListening = () =>
   console.log(`Hyeonju server listening on port http://localhost:${PORT} 💖`);
