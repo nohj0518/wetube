@@ -31,9 +31,18 @@ export const trending = (req, res) => {
 export const watch = (req, res) => {
   const { id } = req.params;
   const video = videos[id - 1];
-  res.render("watch", { pageTitle: `Watch ${video.title}`, video });
+  return res.render("watch", { pageTitle: `Watch : ${video.title}`, video });
 };
-export const edit = (req, res) => res.render("edit", { pageTitle: "Edit" });
-export const search = (req, res) => res.send("Watch");
-export const upload = (req, res) => res.send("Edit");
-export const deleteVideo = (req, res) => res.send("deleteVideo");
+export const getEdit = (req, res) => {
+  const { id } = req.params;
+  const video = videos[id - 1];
+  return res.render("edit", { pageTitle: `Edit : ${video.title}`, video });
+};
+
+export const postEdit = (req, res) => {
+  const { id } = req.params;
+  const video = videos[id - 1];
+  const { title } = req.body;
+  video.title = title;
+  return res.redirect(`/videos/${id}`);
+};
