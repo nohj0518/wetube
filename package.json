@@ -7,7 +7,7 @@
     "url": "git+https://github.com/nohj0518/wetube.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/init.js"
   },
   "author": "hjnoh",
   "license": "ISC",
